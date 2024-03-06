@@ -27,9 +27,9 @@ class Film(Base):
     release_year = Column(Integer)
     genres = Column(ARRAY(String))
 
-
     # Define the relationship with users
     users = relationship("User", secondary="user_film_roles", back_populates="films")
+
     company_id = Column(Integer, ForeignKey("companies.id"))
     company = relationship("Company", back_populates="films")
 
@@ -43,7 +43,7 @@ class Company(Base):
     phone_number = Column(String)
 
     # Define the relationship with films
-    films = relationship("Film", back_populates="company")
+    films = relationship("Film", secondary="company_film", back_populates="companies")
     users = relationship("User", secondary="user_company_roles", back_populates="companies")
 
 # Define the join table for user and film roles
@@ -62,4 +62,12 @@ user_company_roles = Table(
     Column("user_id", ForeignKey("users.id"), primary_key=True),
     Column("company_id", ForeignKey("companies.id"), primary_key=True),
     Column("role", String),  # "owner" or "member"
+)
+
+# Define the association table for company and film relationship
+company_film = Table(
+    "company_film",
+    Base.metadata,
+    Column("company_id", ForeignKey("companies.id"), primary_key=True),
+    Column("film_id", ForeignKey("films.id"), primary_key=True)
 )

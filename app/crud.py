@@ -90,7 +90,7 @@ def add_user_film_role(db: Session, user_id: int, film_id: int, role: str):
     db_film = db.query(models.Film).filter(models.Film.id == film_id).first()
     if db_user is None or db_film is None:
         return False
-    db_user.films.append(db_film)
+    db_user.films.append(db_film, {"role": role})
     db.commit()
     return True
 
@@ -109,7 +109,7 @@ def add_user_company_role(db: Session, user_id: int, company_id: int, role: str)
     db_company = db.query(models.Company).filter(models.Company.id == company_id).first()
     if db_user is None or db_company is None:
         return False
-    db_user.companies.append(db_company)
+    db_user.companies.append(db_company, {"role": role})
     db.commit()
     return True
 
