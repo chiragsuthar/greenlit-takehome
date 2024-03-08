@@ -30,8 +30,7 @@ class Film(Base):
     # Define the relationship with users
     users = relationship("User", secondary="user_film_roles", back_populates="films")
 
-    company_id = Column(Integer, ForeignKey("companies.id"))
-    company = relationship("Company", back_populates="films")
+    companies = relationship("Company", secondary="company_film", back_populates="films")
 
 # Define the Company model
 class Company(Base):
